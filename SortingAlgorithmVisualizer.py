@@ -123,7 +123,7 @@ def bubble_sort():
             comparisonCount += 1
             # plt.bar(range(n), data, color=color_array)
             create_graph_carray(n, data, color_array)
-            mypause(0.0005)
+            mypause(get_speed())
             while pause:
                 app.update()
             plt.clf()  # Grafik temizleme
@@ -137,7 +137,7 @@ def bubble_sort():
                 color_array[j + 1] = COLOR_SWAP
                 # plt.bar(range(n), data, color=color_array)
                 create_graph_carray(n, data, color_array)
-                mypause(0.0005)
+                mypause(get_speed())
                 plt.clf()  # Grafik temizleme
 
         # Sıralanmış ve sıralanmamış elemanları renklendirme
@@ -146,7 +146,7 @@ def bubble_sort():
         greenColors = i+1
         # plt.bar(range(n), data, color=color_array)
         create_graph_carray(n, data, color_array)
-        mypause(0.0005)
+        mypause(get_speed())
         # plt.clf()  # Grafik temizleme
 
     plt.ioff()
@@ -168,10 +168,11 @@ def insertion_sort():
         color_array = [COLOR_UNSORTED] * n
         color_array[:i] = [COLOR_SORTED] * i
         create_graph_carray(n, data, color_array)
-        mypause(0.0005)
+        mypause(get_speed())
         plt.clf()
 
         while j >= 0 and data[j] > key:
+            global comparisonCount
             data[j + 1] = data[j]
             j -= 1
 
@@ -179,8 +180,9 @@ def insertion_sort():
             color_array = [COLOR_UNSORTED] * n
             color_array[:i] = [COLOR_SORTED] * i
             color_array[j + 1] = COLOR_SWAP
+            comparisonCount +=1
             create_graph_carray(n, data, color_array)
-            mypause(0.0005)
+            mypause(get_speed())
             plt.clf()
 
         data[j + 1] = key
@@ -189,13 +191,13 @@ def insertion_sort():
         color_array = [COLOR_UNSORTED] * n
         color_array[:i+1] = [COLOR_SORTED] * (i+1)
         create_graph_carray(n, data, color_array)
-        mypause(0.0005)
+        mypause(get_speed())
         plt.clf()
 
     create_graph()
     color_array = [COLOR_SORTED] * n
     create_graph_carray(n, data, color_array)
-    mypause(0.0005)
+    mypause(get_speed())
     plt.clf()
 
     plt.ioff()
@@ -246,12 +248,15 @@ def merge(left, right):
     i = j = 0
     
     while i < len(left) and j < len(right):
+        
         create_graph()
         color_array = [COLOR_UNSORTED] * len(left) + [COLOR_COMPARISON] * (i + 1)
         color_array += [COLOR_UNSORTED] * len(right) + [COLOR_COMPARISON] * (j + 1)
         print("left: ", len(left))
         print("right: ", right)
         print("color array: ", color_array)
+        global comparisonCount
+        comparisonCount += 1
         create_graph_carray(len(left) + len(right), left + right, color_array)
         mypause(get_speed())        
         plt.clf()
@@ -313,6 +318,8 @@ def partition(arr, low, high):
     
     for j in range(low, high):
         create_graph()
+        global comparisonCount
+        comparisonCount += 1
         color_array = [COLOR_UNSORTED] * len(arr)
         color_array[j] = COLOR_COMPARISON
         color_array[high] = COLOR_COMPARISON
