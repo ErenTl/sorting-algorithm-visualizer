@@ -45,25 +45,6 @@ def continueSorting ():
     global pause
     pause = False
 
-# Sıralama algoritmaları
-# def selection_sort():
-#     print("selection sort")
-#     global data
-#     print(data)
-#     n = len(data)
-#     plt.ion()
-
-#     for i in range(n):
-#         # time.sleep(2)
-#         min_idx = i
-#         for j in range(i+1, n):
-#             if data[j] < data[min_idx]:
-#                 min_idx = j
-#         data[i], data[min_idx] = data[min_idx], data[i]
-#         create_graph()
-#         mypause(5)
-#     plt.ioff()
-#     print("end")
 
 def get_speed():
     global speed_slider
@@ -115,6 +96,112 @@ def selection_sort():
     plt.ioff()
     color_array = [COLOR_SORTED] * n
     create_graph_carray(n, data, color_array)
+    print("end")
+
+def bubble_sort():
+    print("Bubble sort")
+    global data
+    # print(data)
+    n = len(data)
+    plt.ion()
+    greenColors = 0
+
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            # Karşılaştırma yapılacak elemanları renklendirme
+            create_graph()
+            
+            print("greenColors",greenColors)
+            if greenColors != 0:
+                color_array = ([COLOR_UNSORTED] * (n -greenColors)) +( [COLOR_SORTED] * (greenColors))
+            else:
+                color_array = [COLOR_UNSORTED] * n
+            # print(color_array )
+            color_array[j] = COLOR_COMPARISON
+            color_array[j + 1] = COLOR_COMPARISON
+            global comparisonCount
+            comparisonCount += 1
+            # plt.bar(range(n), data, color=color_array)
+            create_graph_carray(n, data, color_array)
+            mypause(0.0005)
+            while pause:
+                app.update()
+            plt.clf()  # Grafik temizleme
+
+            if data[j] > data[j + 1]:
+                data[j], data[j + 1] = data[j + 1], data[j]
+
+                # Yer değiştirilen değerleri renklendirme
+                create_graph()
+                color_array[j] = COLOR_SWAP
+                color_array[j + 1] = COLOR_SWAP
+                # plt.bar(range(n), data, color=color_array)
+                create_graph_carray(n, data, color_array)
+                mypause(0.0005)
+                plt.clf()  # Grafik temizleme
+
+        # Sıralanmış ve sıralanmamış elemanları renklendirme
+        create_graph()
+        color_array = [COLOR_UNSORTED] * (n - i - 1) + [COLOR_SORTED] * (i + 1)
+        greenColors = i+1
+        # plt.bar(range(n), data, color=color_array)
+        create_graph_carray(n, data, color_array)
+        mypause(0.0005)
+        # plt.clf()  # Grafik temizleme
+
+    plt.ioff()
+    color_array = [COLOR_SORTED] * n
+    create_graph_carray(n, data, color_array)
+    print("end")
+
+def insertion_sort():
+    print("Insertion sort")
+    global data
+    n = len(data)
+    plt.ion()
+
+    for i in range(1, n):
+        key = data[i]
+        j = i - 1
+
+        create_graph()
+        color_array = [COLOR_UNSORTED] * n
+        color_array[:i] = [COLOR_SORTED] * i
+        create_graph_carray(n, data, color_array)
+        mypause(0.0005)
+        plt.clf()
+
+        while j >= 0 and data[j] > key:
+            data[j + 1] = data[j]
+            j -= 1
+
+            create_graph()
+            color_array = [COLOR_UNSORTED] * n
+            color_array[:i] = [COLOR_SORTED] * i
+            color_array[j + 1] = COLOR_SWAP
+            create_graph_carray(n, data, color_array)
+            mypause(0.0005)
+            plt.clf()
+
+        data[j + 1] = key
+
+        create_graph()
+        color_array = [COLOR_UNSORTED] * n
+        color_array[:i+1] = [COLOR_SORTED] * (i+1)
+        create_graph_carray(n, data, color_array)
+        mypause(0.0005)
+        plt.clf()
+
+    create_graph()
+    color_array = [COLOR_SORTED] * n
+    create_graph_carray(n, data, color_array)
+    mypause(0.0005)
+    plt.clf()
+
+    plt.ioff()
+    color_array = [COLOR_SORTED] * n
+    create_graph_carray(n, data, color_array)
+    # plt.scatter(range(n), data, color=color_array)
     print("end")
 
 
@@ -318,7 +405,7 @@ def create_graph_carray(n, data, color_array):
             plt.stem([i], [data[i]], linefmt=color_array[i], markerfmt='o', basefmt=' ')
         print("stem")
     global comparisonCount
-    # plt.title(algorithm.get() + " - " + "Karşılaştırma Sayısı: " + comparisonCount.__str__() )
+    plt.title(algorithm.get() + " - " + "Karşılaştırma Sayısı: " + comparisonCount.__str__() )
     plt.xlabel("Index")
     plt.ylabel("Value")
 
@@ -394,18 +481,28 @@ def start_pause_animation():
 # Yeni liste oluşturma
 def generate_list():
     global data
-    size = int(entry_size.get())
-    data = random.sample(range(1, 101), size)
+    size = entry_size.get()
+    
+    if size:
+        size = int(size)
+        data = random.sample(range(1, 101), size)
+    else:
+        data = [int(x.strip()) for x in data_entry.get().split(",")]
     create_graph()
 
 # Arayüz bileşenlerinin oluşturulması
 frame_left = tk.Frame(app)
 frame_left.pack(side="left", padx=10, pady=10)
 
-label_size = tk.Label(frame_left, text="Boyut:")
+label_size = tk.Label(frame_left, text="Boyut (Random oluşturulacak):")
 label_size.pack()
 entry_size = tk.Entry(frame_left)
 entry_size.pack()
+
+data_label = tk.Label(frame_left, text="Veriler (virgülle ayrılmış):")
+data_label.pack()
+data_entry = tk.Entry(frame_left)
+data_entry.pack()
 
 button_generate = tk.Button(frame_left, text="Oluştur", command=generate_list)
 button_generate.pack(pady=5)
