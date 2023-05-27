@@ -24,3 +24,10 @@ Matplotlib is a comprehensive library for creating static, animated, and interac
 ```
 pip install matplotlib
 ```
+
+**Runinng** <br>
+**After installing matplotlib:**
+
+```
+pyhon SortingAlgorithmVisualizer.py
+```
