@@ -1,7 +1,5 @@
 # sorting-algorithm-visualizer
-![yazlab2](https://github.com/ErenTl/sorting-algorithm-visualizer/assets/105067894/75bf8e3f-79c8-4205-8157-d24ac2d9002c)
-
-![image](https://github.com/ErenTl/sorting-algorithm-visualizer/assets/75135356/9b3fef3b-41b2-4cb1-ac74-9526456ac45b)
+![image](https://github.com/ErenTl/sorting-algorithm-visualizer/assets/75135356/82732e69-c33d-44b4-aa32-b56e8029f109)
 
 
 Sıralama algoritmaları, bir dizi veya koleksiyon
